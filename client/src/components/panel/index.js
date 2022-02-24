@@ -5,6 +5,7 @@ export default function Panel() {
   const {
     handleInputChange,
     handleRefresh,
+    handleDelete,
     handleSelect,
     handleSubmit,
     allProduct,
@@ -57,6 +58,9 @@ export default function Panel() {
           placeholder="Nombre de producto"
           className={styles.productName}
         />
+        <button value={list.productId} onClick={(e) => handleDelete(e)}>
+          X
+        </button>
       </div>
       <div className={styles.boxList}>
         {list.tagsId.length ? (
@@ -72,7 +76,7 @@ export default function Panel() {
               <h3 key={tag.id_tag} className={styles.tags}>
                 {tag.name}
               </h3>{" "}
-              <h3>({tag.id_tag}123465891)</h3>
+              <h3>{tag.id_tag}</h3>
             </div>
           ))
         ) : (
@@ -127,16 +131,24 @@ export default function Panel() {
       </form>
       {errors.product_id.length > 0 ? (
         <p className={styles.errorsP}>{errors.product_id}</p>
-      ):""}
+      ) : (
+        ""
+      )}
       {errors.product_name.length > 0 ? (
         <p className={styles.errorsPName}>{errors.product_name}</p>
-      ):""}
-        {errors.id_tag.length > 0 ? (
+      ) : (
+        ""
+      )}
+      {errors.id_tag.length > 0 ? (
         <p className={styles.errorsT}>{errors.id_tag}</p>
-      ):""}
+      ) : (
+        ""
+      )}
       {errors.name.length > 0 ? (
         <p className={styles.errorsTName}>{errors.name}</p>
-      ):""}
+      ) : (
+        ""
+      )}
     </div>
   );
 }

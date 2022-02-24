@@ -68,9 +68,9 @@ const updateProduct = async (req, res) => {
 
 const deleteProduct = async (req, res) => {
     const { id } = req.params
-    const checkProduct = Product.findByPk(id)
-    if (checkProduct.length) {
-        Product.destroy({ where: { id_product: id } })
+    const checkProduct = await Product.findByPk(id)
+    if (checkProduct) {
+        Product.destroy({ where: { id: id } })
         res.status(200).json({ msg: "product has been deleted" })
     }
     res.status(404).json({ msg: "id error" })
