@@ -34,3 +34,9 @@ export const postTags = (prop) =>{
         return await axios.post("http://localhost:3001/api/tags/", prop)
     }
 }
+
+export const deleteProduct = (id)=>{
+    return function(){
+        return axios.delete(`http://localhost:3001/api/product/${id}`)
+    }
+}

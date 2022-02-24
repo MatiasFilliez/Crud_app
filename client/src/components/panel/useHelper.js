@@ -6,9 +6,11 @@ import {
   updateProduct,
   postProduct,
   postTags,
+  deleteProduct
 } from "../../redux/action";
 
 const useHelper = () => {
+
   const dispatch = useDispatch();
   const allTags = useSelector((state) => state.allTags);
   const allProduct = useSelector((state) => state.allProduct);
@@ -98,10 +100,17 @@ const useHelper = () => {
           product_id =
             "El id del producto debe contener un maximo de 10 caracteres";
           return { ...errors, product_id, buttonProduct };
-        } else if (state.id && !state.name) {
+        } if (state.id && !state.name) {
           buttonProduct = true;
           return { ...errors, product_id, buttonProduct };
-        } else return { ...errors, product_id, buttonProduct };
+        } if(state.name && !state.id){
+          buttonProduct = true; 
+          return { ...errors, product_id, buttonProduct }
+        }if(!state.name && !state.id){
+          buttonProduct = true;
+          return { ...errors, product_id, buttonProduct}
+        }
+        else return { ...errors, product_id, buttonProduct };
       }
       default: {
         return errors;
@@ -171,6 +180,7 @@ const useHelper = () => {
   };
 
   const handleSubmit = (e, type) => {
+    let parseId = Number(tag.id_tag);
     if (type === "update") {
       let tagsId = [];
       list.tagsId.map((elemento) => tagsId.push(elemento.id_tag));
@@ -183,8 +193,6 @@ const useHelper = () => {
       dispatch(updateProduct(objectSubmite));
     }
     if (type === "createTag") {
-      e.preventDefault();
-      let parseId = Number(tag.id_tag);
       let result = { ...tag, id_tag: parseId };
       dispatch(postTags(result));
       setTag({
@@ -194,7 +202,6 @@ const useHelper = () => {
       return alert("Etiqueta creado");
     }
     if (type === "createProduct") {
-      let parseId = Number(product.id);
       let result = { ...product, id: parseId };
       dispatch(postProduct(result));
       setProduct({
@@ -205,9 +212,19 @@ const useHelper = () => {
     }
   };
 
+  const handleDelete = (e)=>{
+    const id = e.target.value
+    if(Number(id) === 0) {
+      return alert("Debe seleccionar un producto antes")
+    }    
+    dispatch(deleteProduct(Number(id)))
+    return alert("Producto eliminado")
+  }
+
   return {
     handleInputChange,
     handleRefresh,
+    handleDelete,
     handleSelect,
     handleSubmit,
     allProduct,
